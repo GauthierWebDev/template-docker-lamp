@@ -45,7 +45,23 @@ Champs à modifier :
 
 ---
 
-## Exécuter les containers
+## Gestion générale
+> Si tu es passé par le fichier `./init.sh` et que tes containers Docker n'ont pas été stoppés entre temps,
+> tous tes containers sont déjà opérationnels.  
+> Si ce n'est pas le cas, tu peux faire les opérations ci-dessous
+
+### Build + lancement des containers
+`docker compose up -d --build`
+
+### Lancement des containers
+`docker compose up -d`
+
+### Suppression des containers
+`docker compose down`
+
+---
+
+## Exécutions individuelles
 ### Composer
 `docker compose run composer <command>`  
 Exemple pour création d'un projet Laravel : `docker composer run composer create-project laravel/laravel .`
@@ -54,6 +70,11 @@ Exemple pour création d'un projet Laravel : `docker composer run composer creat
 `docker compose run php <command>`  
 Exemple pour artisan avec php : `docker compose run php artisan make:controller MainController`
 
-## Node
+### Node
 `docker compose run node <command>`  
 Exemple pour l'installation des dépendances Node : `docker compose run node npm install`
+
+### MariaDB
+`docker compose exec db mysql -u <MARIADB_USER> -p<MARIADB_PASSWORD>`  
+Exemple pour la connexion avec l'utilisateur configuré par défaut du repo : `docker compose exec db mysql -u gauthierwebdev -pgauthierwebdev`  
+Exemple pour la connexion avec l'utilisateur root : `docker compose exec db mysql -u root -proot`
