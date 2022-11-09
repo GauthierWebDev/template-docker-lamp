@@ -1,0 +1,61 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    volumes:
+      - ./src:/var/www/html
+    user: docker:docker
+
+  db:
+    image: mariadb:10.5
+    ports:
+      - 33060:3306
+    environment:
+      MARIADB_USER: gauthierwebdev
+      MARIADB_PASSWORD: gauthierwebdev
+      MARIADB_ROOT_SECRET: root
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: gauthierwebdev
+    volumes:
+      - ./db:/var/lib/mysql
+
+  node:
+    image: node:14.21.0-alpine3.16
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+
+  apache:
+    build:
+      context: .
+      dockerfile: apache.dockerfile
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - 9080:80
+    links:
+      - php
+      - db
+
+  adminer:
+    image: adminer:4.8.1
+    depends_on:
+      - db
+    ports:
+      - 9081:8080
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - 1025:1025
+      - 9082:8025
+
+  composer:
+    build:
+      context: .
+      dockerfile: composer.dockerfile
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+    user: docker:docker

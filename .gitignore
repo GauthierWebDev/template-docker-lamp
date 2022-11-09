@@ -1,0 +1,6 @@
+# On ne versionne pas la base de données, mais si c'est nécessaire :
+# commenter la ligne suivante
+db/**/*
+
+# On veut versionner tous les fichiers `.gitkeep`
+!.gitkeep
